@@ -20,16 +20,17 @@
     },
     "homepage": "https://github.com/IgboPharaoh/Lightning-webapp#readme",
     "dependencies": {
-        "dotenv": "^16.0.3",
-        "express": "^4.18.2",
         "@radar/lnrpc": "0.6.0-beta.0",
         "body-parser": "1.19.0",
         "bootstrap": "4.3.1",
         "cors": "2.8.5",
         "css-loader": "2.1.1",
+        "dotenv": "^16.0.3",
         "dotenv-webpack": "1.7.0",
+        "express": "^4.18.2",
         "file-loader": "3.0.1",
         "html-webpack-plugin": "3.2.0",
+        "node-sass": "^8.0.0",
         "query-string": "6.5.0",
         "react": "16.8.6",
         "react-dom": "16.8.6",
@@ -41,19 +42,21 @@
         "typescript": "3.4.5",
         "webpack": "4.30.0",
         "webpack-cli": "3.3.2",
-        "webpack-dev-server": "3.3.1"
+        "webpack-dev-server": "3.3.1",
+        "express-ws": "4.0.0"
     },
     "devDependencies": {
-        "@types/express": "^4.17.16",
-        "@types/node": "^18.11.18",
-        "nodemon": "^2.0.20",
-        "typescript": "^4.9.4",
-        "ts-node": "8.1.0",
         "@types/cors": "2.8.5",
         "@types/dotenv": "6.1.1",
+        "@types/express": "^4.17.16",
+        "@types/express-ws": "3.0.0",
+        "@types/node": "^18.11.18",
         "@types/react": "16.8.16",
         "@types/react-dom": "16.8.4",
         "@types/reactstrap": "8.0.1",
-        "concurrently": "4.1.0"
+        "concurrently": "4.1.0",
+        "nodemon": "^2.0.20",
+        "ts-node": "8.1.0",
+        "typescript": "^4.9.4"
     }
 }
