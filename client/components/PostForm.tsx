@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, CardHeader, CardBody, Form, FormGroup, Input, Button, Alert, Spinner } from 'reactstrap';
 import { Post } from 'interface.types';
 import api from 'lib/api';
 
-const PostForm = () => {
+interface Props {
+    posts: Post[];
+}
+
+const PostForm = ({ posts }: Props) => {
     const [postFormState, setPostFormState] = useState<{
         name: string;
         content: string;
@@ -20,14 +24,22 @@ const PostForm = () => {
         error: '',
     });
 
-    // const { content, name, isPosting } = postFormState;
-    const { name, content, isPosting, error, paymentRequest } = postFormState;
+    const { name, content, isPosting, error, paymentRequest, pendingPost } = postFormState;
     const disabled = !content.length || !name.length || isPosting;
+
+    useEffect(() => {
+        if (pendingPost) {
+            const hasPosted = !!posts.find((post) => post.id === pendingPost.id);
+            if (hasPosted) {
+                setPostFormState({ ...postFormState });
+            }
+        }
+    }, [pendingPost]);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         event.preventDefault();
 
-        setPostFormState({ ...postFormState, name: event.target.value, content: event.target.value });
+        setPostFormState({ ...postFormState, [event.target.name]: event.target.value });
     };
 
     const handleSubmit = (event: React.FormEvent) => {
@@ -39,27 +51,11 @@ const PostForm = () => {
         api.submitPost(name, content)
             .then((post) => {
                 setPostFormState({ ...postFormState, isPosting: false, pendingPost: post.post, paymentRequest: post.paymentRequest });
-                checkIfPaid();
             })
             .catch((error) => {
-                console.log(error);
+                console.log(error, 'error message');
                 setPostFormState({ ...postFormState, error: error.message, isPosting: false });
             });
-    };
-
-    const checkIfPaid = () => {
-        setTimeout(() => {
-            const { pendingPost } = postFormState;
-            if (!pendingPost) return;
-
-            api.getPost(pendingPost.id).then((p) => {
-                if (p.hasPaid) {
-                    window.location.reload();
-                } else {
-                    checkIfPaid();
-                }
-            });
-        }, 1000);
     };
 
     let cardContent;
