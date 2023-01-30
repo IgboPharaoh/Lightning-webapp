@@ -6,6 +6,7 @@ export interface PostReq {
     getPosts: () => Promise<Post[]>;
     request: <T extends object>(method: ApiMethod, path: string, args?: object) => Promise<T>;
     url: string;
+    getPostsWebSocket: () => void;
 }
 
 export interface SubmitPost {

@@ -21,6 +21,11 @@ class POSTSAPI implements PostReq {
         return this.request<Post[]>('GET', '/posts');
     };
 
+    getPostsWebSocket() {
+        let wsUrl = this.url.replace('https', 'wss').replace('htttp', 'ws');
+        return new WebSocket(`${wsUrl}/posts`)
+    }
+
     request = async <T extends object>(method: ApiMethod, path: string, args?: object): Promise<T> => {
         let body = null;
         let query = '';
@@ -33,32 +38,30 @@ class POSTSAPI implements PostReq {
         } else if (args !== undefined) {
             query = `?${stringify(args as any)}`;
         }
-
-        try {
-            const res = await fetch(this.url + path + query, {
-                method,
-                headers,
-                body,
-            });
-
-            if (!res.ok) {
-                let errorMessage;
-                try {
-                    const errorBody = await res.json();
-                    if (!errorBody.error) throw new Error();
-                    errorMessage = errorBody.error;
-                } catch (error) {
-                    throw new Error(`${res.status}: ${res.statusText}`);
+        let params = { method, headers, body };
+        // console.log({ method }, { headers }, { body }, '...method/headers');
+        return fetch(this.url + path + query, params)
+            .then(async (res) => {
+                // console.log(this.url, { path }, { query }, '...query/path');
+                // console.log(this.url + path + query, '...combined/path');
+                if (!res.ok) {
+                    let errorMessage;
+                    try {
+                        const errorBody = await res.json();
+                        if (!errorBody.error) throw new Error(`there is no error body`);
+                        errorMessage = errorBody.error;
+                    } catch (error) {
+                        throw new Error(`${res.status} ${res.statusText}`);
+                    }
+                    throw new Error(errorMessage);
                 }
-                throw new Error(errorMessage);
-            }
-
-            const resp = await res.json();
-            return resp.data as T;
-        } catch (error) {
-            console.error(`APi error calling ${method} ${path}`, error);
-            throw error;
-        }
+                return res.json();
+            })
+            .then((res) => res.data as T)
+            .catch((e) => {
+                console.error(`API error calling ${method} ${path}`, e, 'show me the error');
+                throw e;
+            });
     };
 }
 
