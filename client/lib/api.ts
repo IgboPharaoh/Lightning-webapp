@@ -22,7 +22,7 @@ class POSTSAPI implements PostReq {
     };
 
     getPostsWebSocket() {
-        let wsUrl = this.url.replace('https', 'wss').replace('htttp', 'ws');
+        let wsUrl = this.url.replace('https', 'wss').replace('http', 'ws');
         return new WebSocket(`${wsUrl}/posts`)
     }
 
@@ -39,11 +39,8 @@ class POSTSAPI implements PostReq {
             query = `?${stringify(args as any)}`;
         }
         let params = { method, headers, body };
-        // console.log({ method }, { headers }, { body }, '...method/headers');
         return fetch(this.url + path + query, params)
             .then(async (res) => {
-                // console.log(this.url, { path }, { query }, '...query/path');
-                // console.log(this.url + path + query, '...combined/path');
                 if (!res.ok) {
                     let errorMessage;
                     try {

@@ -89,7 +89,9 @@ const App = () => {
                 <h1 className='App-title'>Lightning Posts</h1>
                 <Row className='justify-content-md-center'>
                     <Col xs={12} sm={8}>
-                        {content}
+                        {/* {content} */}
+                        <PostForm posts={posts} />
+                        <Posts posts={posts} />
                     </Col>
                 </Row>
             </Container>

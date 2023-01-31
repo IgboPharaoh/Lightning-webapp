@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { Spinner, Card, CardTitle, CardBody, CardText, Alert, Jumbotron } from 'reactstrap';
+import React from 'react';
+import { Card, CardTitle, CardBody, CardText, Jumbotron } from 'reactstrap';
 import { Post } from 'interface.types';
-import api from 'lib/api';
 
 interface Props {
     posts: Post[];

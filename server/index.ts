@@ -3,7 +3,6 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import express from 'express';
 import expressWs from 'express-ws';
-import ws, { WebSocket } from 'ws';
 import env from './env';
 import { initNode, node } from './node';
 import postsManager from './posts';
@@ -63,7 +62,7 @@ app.get('/api/posts/:id', (req, res) => {
     }
 });
 
-app.get('/api/posts', async (req, res, next) => {
+app.post('/api/posts', async (req, res, next) => {
     try {
         const { name, content } = req.body;
         if (!name || !content) {
